@@ -11,7 +11,7 @@ Where continent is not null
 -- Select Data that we are going to be starting with
 
 Select Location, date, total_cases, new_cases, total_deaths, population
-From PortfolioProject..CovidDeaths
+From PortfolioProject.CovidDeaths
 Where continent is not null 
 order by 1,2 
 
@@ -37,7 +37,7 @@ order by 1,2
 -- Countries with Highest Infection Rate compared to Population
 
 Select Location, Population, MAX(total_cases) as HighestInfectionCount,  Max((total_cases/population))*100 as PercentPopulationInfected
-From PortfolioProject..CovidDeaths
+From PortfolioProject.CovidDeaths
 --Where location like 'Canada'
 Group by Location, Population
 order by PercentPopulationInfected desc
@@ -110,8 +110,8 @@ Insert into #PercentPopulationVaccinated
 Select dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations
 , SUM(CONVERT(int,vac.new_vaccinations)) OVER (Partition by dea.Location Order by dea.location, dea.Date) as RollingPeopleVaccinated
 --, (RollingPeopleVaccinated/population)*100
-From PortfolioProject..CovidDeaths dea
-Join PortfolioProject..CovidVaccinations vac
+From PortfolioProject.CovidDeaths dea
+Join PortfolioProject.CovidVaccinations vac
 	On dea.location = vac.location
 	and dea.date = vac.date
 --where dea.continent is not null 
